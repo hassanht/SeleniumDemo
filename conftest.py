@@ -1,28 +1,46 @@
 import pytest
 from selenium import webdriver
 
-
-def pytest_addoption(parser):
-    parser.addoption("--base-url", action="store", default="https://rahulshettyacademy.com/AutomationPractice/",
-                     help="Base URL for the tests")
-    parser.addoption("--browser", action="store", default="chrome,firefox",
-                     help="Comma-separated list of browsers to run the tests on")
+from Pages.demo_page import DemoPage
+from Utilities.constants import BASE_URL, IMPLICIT_WAIT_TIME
 
 
-
-@pytest.fixture(params = ['chrome', 'firefox'])
+@pytest.fixture(params=['chrome', 'firefox'])
 def driver(request):
-    # browser_option = request.config.getoption("--browser")
-    base_url = request.config.getoption("--base-url")
+    """
+        Fixture to initialize the WebDriver instance based on the selected browser.
+
+        This fixture receives the selected browser as a parameter and sets up the WebDriver instance accordingly.
+        It maximizes the window, sets an implicit wait time of 30 seconds, and navigates to the specified base URL.
+        The WebDriver instance is then attached to the request object, allowing it to be used in the test classes.
+
+        Args:
+            request: The pytest request object containing the test configuration and fixtures.
+
+        Yields:
+            WebDriver: The initialized WebDriver instance.
+
+        Raises:
+            ValueError: If an invalid browser option is provided.
+
+        Returns:
+            None
+    """
+    base_url = BASE_URL
+    implicit_wait_time = IMPLICIT_WAIT_TIME
     if request.param == "chrome":
-        driver = webdriver.Chrome()
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--headless")
+        driver = webdriver.Chrome(options=chrome_options)
     elif request.param == "firefox":
-        driver = webdriver.Firefox()
+        firefox_options = webdriver.FirefoxOptions()
+        firefox_options.add_argument("--headless")
+        driver = webdriver.Firefox(options=firefox_options)
     else:
         raise ValueError("Invalid browser option. Please specify 'chrome' or 'firefox'.")
     driver.maximize_window()
-    driver.implicitly_wait(30)
+    driver.implicitly_wait(implicit_wait_time)
     driver.get(base_url)
     request.cls.driver = driver
-    yield
+    yield driver
     driver.quit()
