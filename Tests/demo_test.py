@@ -1,3 +1,5 @@
+
+
 import pytest
 
 from Pages.demo_page import DemoPage
@@ -5,6 +7,9 @@ from Pages.demo_page import DemoPage
 
 @pytest.mark.usefixtures("driver")
 class TestDemo:
+    @pytest.fixture(autouse=True)
+    def class_setup(self):
+        self.demo_page = DemoPage(self.driver)
     def test_website_loads(self):
         """
         Test case to verify if the website loads successfully.
@@ -18,8 +23,8 @@ class TestDemo:
         Returns:
             None
         """
-        demo_page = DemoPage(self.driver)
-        assert "Practice Page" in demo_page.get_title()
+
+        assert "Practice Page" in self.demo_page.get_title()
 
     def test_select_radio_button(self):
         """
@@ -35,10 +40,10 @@ class TestDemo:
         Returns:
             None
         """
-        demo_page = DemoPage(self.driver)
+
         radio_button_value = "radio2"
-        demo_page.select_radio_field(radio_button_value)
-        assert demo_page.is_radio_button_selected(radio_button_value)
+        self.demo_page.select_radio_field(radio_button_value)
+        assert self.demo_page.is_radio_button_selected(radio_button_value)
 
     def test_type_to_select_country(self):
         """
@@ -55,9 +60,9 @@ class TestDemo:
         Returns:
             None
         """
-        demo_page = DemoPage(self.driver)
+
         search_value = "Pakistan"
-        demo_page.search_country(search_value)
+        self.demo_page.search_country(search_value)
 
     def test_select_multiple_check_box(self):
         """
@@ -73,10 +78,10 @@ class TestDemo:
         Returns:
             None
         """
-        demo_page = DemoPage(self.driver)
+
         search_values = ["option1", "option3"]
-        demo_page.select_multiple_checkboxes(search_values)
-        assert demo_page.are_checkboxes_selected(search_values)
+        self.demo_page.select_multiple_checkboxes(search_values)
+        assert self.demo_page.are_checkboxes_selected(search_values)
 
     def test_scroll_to_latest_news_text(self):
         """
@@ -92,6 +97,6 @@ class TestDemo:
         Returns:
             None
         """
-        demo_page = DemoPage(self.driver)
-        demo_page.scroll_to_latest_news_text()
-        assert demo_page.is_latest_news_text_displayed()
+
+        self.demo_page.scroll_to_latest_news_text()
+        assert self.demo_page.is_latest_news_text_displayed()
