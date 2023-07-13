@@ -10,7 +10,7 @@ class Utils:
         logger.setLevel(log_level)
 
         # Create a file handler
-        file_handler = logging.FileHandler("Log//automation.log", mode='w')
+        file_handler = logging.FileHandler("Log//automation.log", mode='a')
         file_handler.setLevel(log_level)
 
         # Create a console handler
