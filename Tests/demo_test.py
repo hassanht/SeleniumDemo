@@ -1,15 +1,19 @@
-
+import logging
 
 import pytest
 
 from Pages.demo_page import DemoPage
+from Utilities.utilities import Utils
 
 
 @pytest.mark.usefixtures("driver")
 class TestDemo:
+    log = Utils.custom_logger()
+
     @pytest.fixture(autouse=True)
     def class_setup(self):
         self.demo_page = DemoPage(self.driver)
+
     def test_website_loads(self):
         """
         Test case to verify if the website loads successfully.
@@ -23,7 +27,7 @@ class TestDemo:
         Returns:
             None
         """
-
+        self.log.info("Asserting on title")
         assert "Practice Page" in self.demo_page.get_title()
 
     def test_select_radio_button(self):
