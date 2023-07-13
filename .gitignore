@@ -1,4 +1,6 @@
-geckodriver.log
-report.html
 .idea/
 .pytest_cache/
+Log/
+geckodriver.log
+report.html
+

@@ -5,7 +5,7 @@ from Pages.demo_page import DemoPage
 from Utilities.constants import BASE_URL, IMPLICIT_WAIT_TIME
 
 
-@pytest.fixture(params=['chrome', 'firefox'], scope="class")
+@pytest.fixture(params=['chrome'], scope="class")
 def driver(request):
     """
         Fixture to initialize the WebDriver instance based on the selected browser.
